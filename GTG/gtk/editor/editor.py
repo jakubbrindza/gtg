@@ -129,8 +129,9 @@ class TaskEditor(object):
             self.textview.override_font(Pango.FontDescription(conf_font_value))
         # Voila! it's done
         self.calendar = GTGCalendar()
-        self.calendar.set_transient_for(self.window)
-        self.calendar.set_decorated(False)
+        self.calendar_popover = self.calendar.get_ui()
+        # self.calendar.set_transient_for(self.window)
+        # self.calendar.set_decorated(False)
         self.duedate_widget = self.builder.get_object("duedate_entry")
         self.startdate_widget = self.builder.get_object("startdate_entry")
         self.closeddate_widget = self.builder.get_object("closeddate_entry")
@@ -248,16 +249,14 @@ class TaskEditor(object):
     '''
 
     def show_popover_start(self, widget, event):
-        popover = self.builder.get_object("date_popover")
-        popover.set_relative_to(self.startdate_widget)
-        popover.set_modal(False)
-        popover.show_all()
+        self.calendar_popover.set_relative_to(self.startdate_widget)
+        self.calendar_popover.set_modal(False)
+        self.calendar_popover.show()
 
     def show_popover_due(self, widget, popover):
-        popover = self.builder.get_object("date_popover")
-        popover.set_relative_to(self.duedate_widget)
-        popover.set_modal(False)
-        popover.show_all()
+        self.calendar_popover.set_relative_to(self.duedate_widget)
+        self.calendar_popover.set_modal(False)
+        self.calendar_popover.show()
 
     def show_popover_closed(self, widget, popover):
         closed_popover = self.builder.get_object("closed_popover")
@@ -494,8 +493,8 @@ class TaskEditor(object):
         # we show the calendar at the right position
         rect = widget.get_allocation()
         result, x, y = widget.get_window().get_origin()
-        self.calendar.show_at_position(x + rect.x + rect.width,
-                                       y + rect.y)
+        # self.calendar.show_at_position(x + rect.x + rect.width,
+        #                                y + rect.y)
 
     def on_date_changed(self, calendar):
         date, date_kind = calendar.get_selected_date()

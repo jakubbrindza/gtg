@@ -173,8 +173,7 @@ class TaskBrowser(GObject.GObject):
         tag_completion = TagCompletion(self.req.get_tag_tree())
         self.modifytags_dialog = ModifyTagsDialog(tag_completion, self.req)
         self.calendar = GTGCalendar()
-        self.calendar.set_transient_for(self.window)
-        self.calendar.connect("date-changed", self.on_date_changed)
+        # self.calendar.__popover.connect("date-changed", self.on_date_changed)
 
     def init_tags_sidebar(self):
         """
@@ -1014,8 +1013,8 @@ class TaskBrowser(GObject.GObject):
         # Shows the calendar just above the mouse on widget's line of symmetry
         rect = widget.get_allocation()
         result, x, y = widget.get_window().get_origin()
-        self.calendar.show_at_position(x + rect.x + rect.width,
-                                       y + rect.y)
+        # self.calendar.show_at_position(x + rect.x + rect.width,
+        #                                y + rect.y)
 
     def on_set_due_for_specific_date(self, widget):
         """ Display Calendar to set due date of selected tasks """
@@ -1030,8 +1029,8 @@ class TaskBrowser(GObject.GObject):
         # Shows the calendar just above the mouse on widget's line of symmetry
         rect = widget.get_allocation()
         result, x, y = widget.get_window().get_origin()
-        self.calendar.show_at_position(x + rect.x + rect.width,
-                                       y + rect.y)
+        # self.calendar.show_at_position(x + rect.x + rect.width,
+        #                                y + rect.y)
 
     def on_date_changed(self, calendar):
         # Get tasks' list from task names' list
