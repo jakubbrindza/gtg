@@ -205,7 +205,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="width_chars">10</property>
-                        <signal name="changed" handler="startingdate_changed" swapped="no"/>
+                        <signal name="focus-in-event" handler="on_startdate_pressed" swapped="no"/>
+                        <signal name="changed" handler="startdate_changed" swapped="no"/>
                         <signal name="focus-out-event" handler="startdate_focus_out" swapped="no"/>
                         <signal name="focus-in-event" handler="show_popover_start" swapped="no"/>
                       </object>
@@ -243,6 +244,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="width_chars">10</property>
+                        <signal name="focus-in-event" handler="on_duedate_pressed" swapped="no"/>
                         <signal name="changed" handler="duedate_changed" swapped="no"/>
                         <signal name="focus-out-event" handler="duedate_focus_out" swapped="no"/>
                         <signal name="focus-in-event" handler="show_popover_due" swapped="no"/>
@@ -281,6 +283,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="width_chars">10</property>
+                        <signal name="focus-in-event" handler="on_closeddate_pressed" swapped="no"/>
                         <signal name="changed" handler="closeddate_changed" swapped="no"/>
                         <signal name="focus-out-event" handler="closeddate_focus_out" swapped="no"/>
                         <signal name="focus-in-event" handler="show_popover_closed" swapped="no"/>

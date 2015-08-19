@@ -81,32 +81,32 @@ class TaskEditor(object):
             "on_mark_as_done": self.change_status,
             "on_dismiss": self.dismiss,
             "delete_clicked": self.delete_task,
-            "on_duedate_pressed": lambda w: self.on_date_pressed(
-                w, GTGCalendar.DATE_KIND_DUE),
             "on_tags_popover": self.open_tags_popover,
+            "show_popover_start": self.show_popover_start,
+            "show_popover_due": self.show_popover_due,
+            "show_popover_closed": self.show_popover_closed,
             "on_startdate_pressed": lambda w: self.on_date_pressed(
                 w, GTGCalendar.DATE_KIND_START),
+            "on_duedate_pressed": lambda w: self.on_date_pressed(
+                w, GTGCalendar.DATE_KIND_DUE),
             "on_closeddate_pressed": lambda w: self.on_date_pressed(
                 w, GTGCalendar.DATE_KIND_CLOSED),
+            "startdate_changed": lambda w: self.date_changed(
+                w, GTGCalendar.DATE_KIND_START),
             "duedate_changed": lambda w: self.date_changed(
                 w, GTGCalendar.DATE_KIND_DUE),
-            "duedate_focus_out": lambda w, e: self.date_focus_out(
-                w, e, GTGCalendar.DATE_KIND_DUE),
-            "startingdate_changed": lambda w: self.date_changed(
-                w, GTGCalendar.DATE_KIND_START),
-            "startdate_focus_out": lambda w, e: self.date_focus_out(
-                w, e, GTGCalendar.DATE_KIND_START),
             "closeddate_changed": lambda w: self.date_changed(
                 w, GTGCalendar.DATE_KIND_CLOSED),
+            "startdate_focus_out": lambda w, e: self.date_focus_out(
+                w, e, GTGCalendar.DATE_KIND_START),
+            "duedate_focus_out": lambda w, e: self.date_focus_out(
+                w, e, GTGCalendar.DATE_KIND_DUE),
             "closeddate_focus_out": lambda w, e: self.date_focus_out(
                 w, e, GTGCalendar.DATE_KIND_CLOSED),
             "on_insert_subtask_clicked": self.insert_subtask,
             "on_inserttag_clicked": self.inserttag_clicked,
             "on_parent_select": self.on_parent_select,
             "on_move": self.on_move,
-            "show_popover_start": self.show_popover_start,
-            "show_popover_due": self.show_popover_due,
-            "show_popover_closed": self.show_popover_closed,
             "on_tag_toggled": self.on_tag_toggled,
         }
         self.builder.connect_signals(dic)
@@ -250,18 +250,18 @@ class TaskEditor(object):
 
     def show_popover_start(self, widget, event):
         self.calendar_popover.set_relative_to(self.startdate_widget)
-        self.calendar_popover.set_modal(False)
+        # self.calendar_popover.set_modal(True)
         self.calendar_popover.show()
 
     def show_popover_due(self, widget, popover):
         self.calendar_popover.set_relative_to(self.duedate_widget)
-        self.calendar_popover.set_modal(False)
+        # self.calendar_popover.set_modal(True)
         self.calendar_popover.show()
 
     def show_popover_closed(self, widget, popover):
         closed_popover = self.builder.get_object("closed_popover")
         closed_popover.set_relative_to(self.closeddate_widget)
-        closed_popover.set_modal(False)
+        # closed_popover.set_modal(True)
         closed_popover.show_all()
 
     def open_tags_popover(self, widget):
@@ -493,8 +493,7 @@ class TaskEditor(object):
         # we show the calendar at the right position
         rect = widget.get_allocation()
         result, x, y = widget.get_window().get_origin()
-        # self.calendar.show_at_position(x + rect.x + rect.width,
-        #                                y + rect.y)
+        self.calendar.show_at_position()
 
     def on_date_changed(self, calendar):
         date, date_kind = calendar.get_selected_date()

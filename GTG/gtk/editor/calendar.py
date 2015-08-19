@@ -47,6 +47,7 @@ class GTGCalendar(GObject.GObject):
         self.date_kind = None
         self.date = Date.no_date()
         self._init_gtk()
+        self.is_user_just_browsing_the_calendar = False
 
     def _init_gtk(self):
         self.popover = self.builder.get_object("date_popover")
@@ -103,7 +104,7 @@ class GTGCalendar(GObject.GObject):
             # to let GTK solve it's bussiness.
             self.calendar.clear_marks()
 
-    # def show_at_position(self, x, y):
+    def show_at_position(self):
     #     width, height = self.popover.get_size()
     #     # self.move_calendar_inside(width, height, x, y)
     #     self.popover.show()
@@ -132,18 +133,18 @@ class GTGCalendar(GObject.GObject):
     #     else:
     #         # self.popover.connect('button-press-event', self.focus_out)
     #         pass
-    #     self.sigid = self.calendar.connect("day-selected",
-    #                                            self.day_sel,
-    #                                            "RealDate",)
+        self.sigid = self.calendar.connect("day-selected",
+                                               self.day_sel,
+                                               "RealDate",)
 
-    #     self.sigid_month = self.calendar.connect("month-changed",
-    #                                                  self.month_changed)
-    #     # Problem: Gtk.Calendar does not tell you directly if the
-    #     #          "day-selected" signal was caused by the user clicking on
-    #     #          a date, or just browsing the calendar.
-    #     # Solution: we track that in a variable
-    #     self.is_user_just_browsing_the_calendar = False
-    #     self.mark_today_in_bold()
+        self.sigid_month = self.calendar.connect("month-changed",
+                                                     self.month_changed)
+        # Problem: Gtk.Calendar does not tell you directly if the
+        #          "day-selected" signal was caused by the user clicking on
+        #          a date, or just browsing the calendar.
+        # Solution: we track that in a variable
+        self.is_user_just_browsing_the_calendar = False
+        self.mark_today_in_bold()
 
     # def focus_out(self, w=None, e=None):
     #     # We should only close if the pointer click is out of the calendar !

@@ -1013,8 +1013,7 @@ class TaskBrowser(GObject.GObject):
         # Shows the calendar just above the mouse on widget's line of symmetry
         rect = widget.get_allocation()
         result, x, y = widget.get_window().get_origin()
-        # self.calendar.show_at_position(x + rect.x + rect.width,
-        #                                y + rect.y)
+        self.calendar.show_at_position()
 
     def on_set_due_for_specific_date(self, widget):
         """ Display Calendar to set due date of selected tasks """
