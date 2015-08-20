@@ -34,11 +34,11 @@ class GTGCalendar(GObject.GObject):
     DATE_KIND_CLOSED = "closed"
 
     # Gobject signal description
-    _signal_type = (GObject.SignalFlags.RUN_FIRST,
+    __signal_type__ = (GObject.SIGNAL_RUN_FIRST,
                        None,
                        [])
 
-    _gsignals = {'date-changed': _signal_type, }
+    __gsignals__ = {'date-changed': __signal_type__, }
 
     def __init__(self):
         super().__init__()
@@ -46,21 +46,27 @@ class GTGCalendar(GObject.GObject):
         self.builder.add_from_file(GnomeConfig.CALENDAR_UI_FILE)
         self.date_kind = None
         self.date = Date.no_date()
-        self._init_gtk()
         self.is_user_just_browsing_the_calendar = False
+        self.sigid = None
+        self.sigid_month = None
 
-    def _init_gtk(self):
+        self.builder.connect_signals(self)
+
         self.popover = self.builder.get_object("date_popover")
-        self.calenderendar = self.builder.get_object("calendar")
+        self.calendar = self.builder.get_object("calendar")
         self.fuzzydate_btns = self.builder.get_object("fuzzydate_btns")
-        self.builder.get_object("button_clear").connect(
-            "clicked", lambda w: self.day_sel(w, ""))
-        self.builder.get_object("button_now").connect(
-            "clicked", lambda w: self.day_sel(w, "now"))
-        self.builder.get_object("button_soon").connect(
-            "clicked", lambda w: self.day_sel(w, "soon"))
-        self.builder.get_object("button_someday").connect(
-            "clicked", lambda w: self.  day_sel(w, "someday"))
+
+    def on_button_now(self, w):
+        self.day_sel(w, "now")
+
+    def on_button_soon(self, w):
+        self.day_sel(w, "soon")
+
+    def on_button_someday(self, w):
+        self.day_sel(w, "someday")
+
+    def on_button_clear(self, w):
+        self.day_sel(w, "")
 
     def get_ui(self):
         return self.builder.get_object("date_popover")
@@ -146,12 +152,12 @@ class GTGCalendar(GObject.GObject):
         self.is_user_just_browsing_the_calendar = False
         self.mark_today_in_bold()
 
-    # def focus_out(self, w=None, e=None):
-    #     # We should only close if the pointer click is out of the calendar !
-    #     p = self.popover.get_window().get_pointer()
-    #     s = self.popover.get_size()
-    #     if not(0 <= p[1] <= s[0] and 0 <= p[2] <= s[1]):
-    #         self.close_calendar()
+    def focus_out(self, w=None, e=None):
+        # We should only close if the pointer click is out of the calendar !
+        p = self.popover.get_window().get_pointer()
+        s = self.popover.get_size()
+        if not(0 <= p[1] <= s[0] and 0 <= p[2] <= s[1]):
+            self.close_calendar()
 
     def close_calendar(self, widget=None, e=None):
         self.popover.hide()

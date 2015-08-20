@@ -85,10 +85,8 @@ class TaskEditor(object):
             "show_popover_start": self.show_popover_start,
             "show_popover_due": self.show_popover_due,
             "show_popover_closed": self.show_popover_closed,
-            "on_startdate_pressed": lambda w: self.on_date_pressed(
-                w, GTGCalendar.DATE_KIND_START),
-            "on_duedate_pressed": lambda w: self.on_date_pressed(
-                w, GTGCalendar.DATE_KIND_DUE),
+            "on_startdate_pressed": self.on_startdate_pressed,
+            "on_duedate_pressed": self.on_duedate_pressed,
             "on_closeddate_pressed": lambda w: self.on_date_pressed(
                 w, GTGCalendar.DATE_KIND_CLOSED),
             "startdate_changed": lambda w: self.date_changed(
@@ -97,8 +95,7 @@ class TaskEditor(object):
                 w, GTGCalendar.DATE_KIND_DUE),
             "closeddate_changed": lambda w: self.date_changed(
                 w, GTGCalendar.DATE_KIND_CLOSED),
-            "startdate_focus_out": lambda w, e: self.date_focus_out(
-                w, e, GTGCalendar.DATE_KIND_START),
+            "startdate_focus_out": self.startdate_focus_out,
             "duedate_focus_out": lambda w, e: self.date_focus_out(
                 w, e, GTGCalendar.DATE_KIND_DUE),
             "closeddate_focus_out": lambda w, e: self.date_focus_out(
@@ -205,6 +202,21 @@ class TaskEditor(object):
     + RE-enable all the features so that they work properly.
     + new shortcuts for bold and italic once implemented.
     '''
+
+    def on_startdate_pressed(self, w, date_kind):
+        self.on_date_pressed(w, GTGCalendar.DATE_KIND_START)
+
+    def on_duedate_pressed(self, w, date_kind):
+        self.on_date_pressed(w, GTGCalendar.DATE_KIND_DUE)
+
+    def startdate_focus_out(self, w, e):
+        self.date_focus_out(w, e, GTGCalendar.DATE_KIND_START)
+        self.calendar.focus_out()
+
+    def duedate_focus_out(self,w, e):
+        self.date_focus_out(w, e, GTGCalendar.DATE_KIND_DUE)
+        self.calendar.focus_out()
+
     def init_accelerators(self):
         agr = Gtk.AccelGroup()
         self.window.add_accel_group(agr)
@@ -250,18 +262,18 @@ class TaskEditor(object):
 
     def show_popover_start(self, widget, event):
         self.calendar_popover.set_relative_to(self.startdate_widget)
-        # self.calendar_popover.set_modal(True)
+        self.calendar_popover.set_modal(False)
         self.calendar_popover.show()
 
     def show_popover_due(self, widget, popover):
         self.calendar_popover.set_relative_to(self.duedate_widget)
-        # self.calendar_popover.set_modal(True)
+        self.calendar_popover.set_modal(False)
         self.calendar_popover.show()
 
     def show_popover_closed(self, widget, popover):
         closed_popover = self.builder.get_object("closed_popover")
         closed_popover.set_relative_to(self.closeddate_widget)
-        # closed_popover.set_modal(True)
+        closed_popover.set_modal(True)
         closed_popover.show_all()
 
     def open_tags_popover(self, widget):
@@ -491,8 +503,6 @@ class TaskEditor(object):
             date = self.task.get_closed_date()
         self.calendar.set_date(date, date_kind)
         # we show the calendar at the right position
-        rect = widget.get_allocation()
-        result, x, y = widget.get_window().get_origin()
         self.calendar.show_at_position()
 
     def on_date_changed(self, calendar):

@@ -12,7 +12,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkBox" id="fuzzy_btns">
+          <object class="GtkBox" id="fuzzydate_btns">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
@@ -20,6 +20,7 @@
                 <property name="visible">True</property>
                 <property name="halign">fill</property>
                 <property name="text" translatable="yes">Now</property>
+                <signal handler="on_button_now" name="clicked" swapped="no"/>
               </object>
             </child>
             <child>
@@ -27,6 +28,7 @@
                 <property name="visible">True</property>
                 <property name="halign">fill</property>
                 <property name="text" translatable="yes">Soon</property>
+                <signal handler="on_button_soon" name="clicked" swapped="no"/>
               </object>
             </child>
             <child>
@@ -34,6 +36,7 @@
                 <property name="visible">True</property>
                 <property name="halign">fill</property>
                 <property name="text" translatable="yes">Someday</property>
+                <signal handler="on_button_someday" name="clicked" swapped="no"/>
               </object>
             </child>
             <child>
@@ -41,6 +44,7 @@
                 <property name="visible">True</property>
                 <property name="halign">fill</property>
                 <property name="text" translatable="yes">Clear due date</property>
+                <signal handler="on_button_clear" name="clicked" swapped="no"/>
               </object>
             </child>
           </object>
