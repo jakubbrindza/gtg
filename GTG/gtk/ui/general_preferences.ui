@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <object class="GtkScrolledWindow" id="general_pref_window">
-    <property name="min-content-height">470</property>
+    <property name="min-content-height">500</property>
     <property name="hscrollbar-policy">never</property>
     <property name="visible">True</property>
     <child>
@@ -140,6 +140,51 @@
           </object>
         </child>
         <child>
+          <object class="GtkBox" id="dark_theme_box">
+            <property name="visible">True</property>
+            <property name="margin-start">40</property>
+	    <property name="margin-bottom">20</property>
+            <property name="homogeneous">False</property>
+            <child>
+              <object class="GtkSwitch" id="dark_theme_button">
+                <property name="visible">True</property>
+                <property name="valign">center</property>
+                <!--<signal handler="on_autostart_toggled" name="state-set" swapped="no"/>-->
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="visible">True</property>
+                <property name="margin-start">10</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Set dark theme</property>
+                    <property name="visible">True</property>
+                    <property name="xalign">0.0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Switch the entire application to dark theme.</property>
+                    <property name="visible">True</property>
+                    <property name="single-line-mode">True</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                    <attributes>
+                      <attribute name="scale" value="0.833333"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+	<child>
           <object class="GtkLabel" id="browser_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Task Browser</property>
